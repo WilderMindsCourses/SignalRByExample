@@ -44,7 +44,7 @@ namespace TheCallCenter.Controllers
           }
         }
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         ViewBag.Message = "Threw exception trying to save call";
       }
