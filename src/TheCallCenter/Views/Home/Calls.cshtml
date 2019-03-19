@@ -1,0 +1,24 @@
+﻿@{
+  ViewData["Title"] = "Home Page";
+}
+@section Scripts {
+  <script src="~/lib/moment/min/moment.min.js"></script>
+  <script src="~/js/calls.js"></script>
+}
+<div class="row">
+  <div class="col-10 offset-1">
+    <div id="theWarning" class="alert alert-warning hide"></div>
+    <h3>Call Log</h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>Email</th>
+          <th>Call Time</th>
+          <th>Complete</th>
+        </tr>
+      </thead>
+      <tbody id="logBody"></tbody>
+    </table>
+  </div>
+</div>
