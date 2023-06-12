@@ -31,10 +31,7 @@ namespace TheCallCenter
       });
 
 
-      services.AddMvc(options =>
-      {
-        options.EnableEndpointRouting = false;
-      });
+      services.AddMvc();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,13 +47,16 @@ namespace TheCallCenter
       }
 
       app.UseStaticFiles();
+      app.UseRouting();
       app.UseCookiePolicy();
 
-      app.UseMvc(routes =>
+      app.UseEndpoints(routes =>
       {
-        routes.MapRoute(
-          name: "default",
-          template: "{controller=Home}/{action=Index}/{id?}");
+        // 2023-06-12 - MapHub<T> exists in app.UseEndpoints delegate, NOT in app.UseSignalR delegate anymore.
+
+        routes.MapControllerRoute(
+          "default",
+          "{controller=Home}/{action=Index}/{id?}");
       });
     }
   }
