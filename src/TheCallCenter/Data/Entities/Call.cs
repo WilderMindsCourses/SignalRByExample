@@ -10,18 +10,17 @@ namespace TheCallCenter.Data.Entities
 {
     public class Call
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         [Required]
-        public string Problem { get; set; }
+        public string Problem { get; set; } = null!;
 
         public DateTime CallTime { get; set; } = DateTime.UtcNow;
 

@@ -21,7 +21,8 @@ namespace TheCallCenter
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddDbContext<CallCenterContext>(options => options.UseInMemoryDatabase("WilderMinds_SignalRByExample"));
+      services.AddDbContext<CallCenterContext>()
+        .AddEntityFrameworkSqlServer();
 
       services.Configure<CookiePolicyOptions>(options =>
       {
@@ -30,8 +31,14 @@ namespace TheCallCenter
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
-
-      services.AddMvc();
+      /* 
+       * 2023-06-12 - Differ from Video: 
+       * Replaces AddMvc() with AddControllersWithViews(). 
+       * AddMvc Enables Razor Pages when we don't need that feature. Adding
+       * Mvc instead of just "ControllersWithViews" adds a performance hit that's
+       * unnecessary
+       */
+      services.AddControllersWithViews();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +59,10 @@ namespace TheCallCenter
 
       app.UseEndpoints(routes =>
       {
-        // 2023-06-12 - MapHub<T> exists in app.UseEndpoints delegate, NOT in app.UseSignalR delegate anymore.
+        /* 
+         * 2023-06-12 - Differ From Video
+         * MapHub<T> exists in app.UseEndpoints delegate, NOT in app.UseSignalR delegate anymore.
+         */
 
         routes.MapControllerRoute(
           "default",
