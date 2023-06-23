@@ -1,11 +1,6 @@
 ﻿using TheCallCenter.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheCallCenter.Data
 {
@@ -13,7 +8,7 @@ namespace TheCallCenter.Data
   {
     private readonly IConfiguration _config;
 
-    public CallCenterContext(IConfiguration config)
+    public CallCenterContext(DbContextOptions<CallCenterContext> options, IConfiguration config) : base(options)
     {
       _config = config;
     }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using TheCallCenter.Data;
 
 namespace TheCallCenter
@@ -34,12 +31,18 @@ namespace TheCallCenter
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
-
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+      /* 
+       * 2023-06-12 - Differ from Video: 
+       * Replaces AddMvc() with AddControllersWithViews(). 
+       * AddMvc Enables Razor Pages when we don't need that feature. Adding
+       * Mvc instead of just "ControllersWithViews" adds a performance hit that's
+       * unnecessary
+       */
+      services.AddControllersWithViews();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -51,13 +54,19 @@ namespace TheCallCenter
       }
 
       app.UseStaticFiles();
+      app.UseRouting();
       app.UseCookiePolicy();
 
-      app.UseMvc(routes =>
+      app.UseEndpoints(routes =>
       {
-        routes.MapRoute(
-                  name: "default",
-                  template: "{controller=Home}/{action=Index}/{id?}");
+        /* 
+         * 2023-06-12 - Differ From Video
+         * MapHub<T> exists in app.UseEndpoints delegate, NOT in app.UseSignalR delegate anymore.
+         */
+
+        routes.MapControllerRoute(
+          "default",
+          "{controller=Home}/{action=Index}/{id?}");
       });
     }
   }
